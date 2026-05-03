@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
 
+// Community-maintained instances from cobalt.directory
+const INSTANCES = [
+  'https://cobalt.omega.wolfy.love',
+  'https://melon.clxxped.lol',
+  'https://nuko-c.meowing.de'
+];
+
 export async function POST(request) {
   try {
     const { url, quality, isAudioOnly } = await request.json();
@@ -8,8 +15,11 @@ export async function POST(request) {
       return NextResponse.json({ status: 'error', message: 'URL is required' }, { status: 400 });
     }
 
-    // Calling Cobalt API
-    const response = await fetch('https://api.cobalt.tools/api/json', {
+    // Attempt to use the first available instance
+    const targetInstance = INSTANCES[0];
+
+    // Cobalt v10+ uses the root endpoint and a slightly different schema
+    const response = await fetch(targetInstance, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,9 +27,10 @@ export async function POST(request) {
       },
       body: JSON.stringify({
         url: url,
-        vQuality: quality || '720',
-        isAudioOnly: isAudioOnly || false,
-        filenamePattern: 'pretty', // Cleaner filenames
+        videoQuality: quality || '720',
+        downloadMode: isAudioOnly ? 'audio' : 'video',
+        audioFormat: 'mp3',
+        filenameStyle: 'pretty',
       }),
     });
 
@@ -35,6 +46,6 @@ export async function POST(request) {
     return NextResponse.json(data);
   } catch (error) {
     console.error('API Error:', error);
-    return NextResponse.json({ status: 'error', message: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ status: 'error', message: 'Server error or API Instance down. Please try again.' }, { status: 500 });
   }
 }
