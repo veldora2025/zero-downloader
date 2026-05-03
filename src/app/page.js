@@ -298,48 +298,6 @@ export default function Home() {
 
           {/* Bottom row: quality + mode + download */}
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-            {/* Quality selector */}
-            <div ref={qualityRef} style={{ position: 'relative', zIndex: 60 }}>
-              <button
-                type="button"
-                onClick={() => setShowQuality(!showQuality)}
-                className="btn-secondary"
-                style={{ padding: '10px 16px', fontSize: 13, borderRadius: 10, gap: 6 }}
-              >
-                {qualityOptions.find(q => q.value === quality)?.label || '720p'}
-                <ChevronDown size={14} style={{
-                  transform: showQuality ? 'rotate(180deg)' : 'rotate(0)',
-                  transition: 'transform 0.2s ease',
-                }} />
-              </button>
-              {showQuality && (
-                <div className="glass-solid animate-scale-in" style={{
-                  position: 'absolute', top: 'calc(100% + 8px)', left: 0,
-                  minWidth: 200, padding: 6, zIndex: 999, borderRadius: 14,
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-                }}>
-                  {qualityOptions.map(q => (
-                    <button
-                      key={q.value} type="button"
-                      onClick={() => { setQuality(q.value); setShowQuality(false); }}
-                      style={{
-                        display: 'flex', justifyContent: 'space-between', width: '100%',
-                        padding: '10px 14px', border: 'none', borderRadius: 10,
-                        background: quality === q.value ? 'rgba(123,47,247,0.15)' : 'transparent',
-                        color: '#fff', cursor: 'pointer', fontSize: 14,
-                        fontFamily: 'Outfit', transition: 'background 0.2s',
-                      }}
-                      onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-                      onMouseOut={e => e.currentTarget.style.background = quality === q.value ? 'rgba(123,47,247,0.15)' : 'transparent'}
-                    >
-                      <span style={{ fontWeight: 500 }}>{q.label}</span>
-                      <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>{q.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* Mode toggle */}
             <div style={{
               display: 'flex', borderRadius: 10,
