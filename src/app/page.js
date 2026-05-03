@@ -227,6 +227,7 @@ export default function Home() {
             padding: 8, marginBottom: 20,
             display: 'flex', flexDirection: 'column', gap: 8,
             opacity: 0,
+            position: 'relative', zIndex: 20,
           }}
         >
           {/* Top row: input + paste */}
@@ -269,7 +270,7 @@ export default function Home() {
           {/* Bottom row: quality + mode + download */}
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             {/* Quality selector */}
-            <div ref={qualityRef} style={{ position: 'relative' }}>
+            <div ref={qualityRef} style={{ position: 'relative', zIndex: 60 }}>
               <button
                 type="button"
                 onClick={() => setShowQuality(!showQuality)}
@@ -285,7 +286,8 @@ export default function Home() {
               {showQuality && (
                 <div className="glass-solid animate-scale-in" style={{
                   position: 'absolute', top: 'calc(100% + 8px)', left: 0,
-                  minWidth: 180, padding: 6, zIndex: 50, borderRadius: 14,
+                  minWidth: 200, padding: 6, zIndex: 999, borderRadius: 14,
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
                 }}>
                   {qualityOptions.map(q => (
                     <button
