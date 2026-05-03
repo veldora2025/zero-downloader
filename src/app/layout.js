@@ -4,13 +4,18 @@ export const metadata = {
   title: "Zero Downloader - Premium Video Downloader",
   description: "Download TikTok, YouTube Shorts, and Instagram Reels with ease.",
   manifest: "/manifest.json",
-  themeColor: "#1a0b2e",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Zero Downloader",
   },
+};
+
+export const viewport = {
+  themeColor: "#1a0b2e",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }) {
