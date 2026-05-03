@@ -135,8 +135,37 @@ export default function Home() {
     }
   };
 
-  const handleDownload = (link) => {
-    window.open(link, '_blank');
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = async (link, type = 'video') => {
+    setDownloading(true);
+    try {
+      // Fetch the file as a blob to control the filename
+      const response = await fetch(link);
+      const blob = await response.blob();
+      
+      // Generate proper filename
+      const ext = type === 'audio' ? 'mp3' : 'mp4';
+      const platformName = platform ? platformConfig[platform].name : 'video';
+      const timestamp = new Date().toISOString().slice(0, 10);
+      const shortId = Date.now().toString(36);
+      const filename = `ZeroDL_${platformName}_${timestamp}_${shortId}.${ext}`;
+
+      // Trigger download with proper filename
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      // Fallback: open in new tab if blob download fails
+      window.open(link, '_blank');
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleClearHistory = () => {
@@ -447,18 +476,23 @@ export default function Home() {
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 {result.url && (
                   <button
-                    onClick={() => handleDownload(result.url)}
+                    onClick={() => handleDownload(result.url, downloadMode === 'audio' ? 'audio' : 'video')}
                     className="btn-primary"
+                    disabled={downloading}
                     style={{ flex: 1, minWidth: 160 }}
                   >
-                    <Download size={18} />
-                    {downloadMode === 'audio' ? 'Download Audio' : 'Download Video'}
+                    {downloading ? (
+                      <><Loader2 size={18} className="animate-spin" /> Downloading...</>
+                    ) : (
+                      <><Download size={18} /> {downloadMode === 'audio' ? 'Download Audio' : 'Download Video'}</>
+                    )}
                   </button>
                 )}
                 {result.music && (
                   <button
-                    onClick={() => handleDownload(result.music)}
+                    onClick={() => handleDownload(result.music, 'audio')}
                     className="btn-secondary"
+                    disabled={downloading}
                     style={{ flex: 1, minWidth: 140 }}
                   >
                     <Music size={18} />
@@ -468,8 +502,9 @@ export default function Home() {
                 {result.picker && result.picker.map((item, idx) => (
                   <button
                     key={idx}
-                    onClick={() => handleDownload(item.url)}
+                    onClick={() => handleDownload(item.url, 'video')}
                     className="btn-secondary"
+                    disabled={downloading}
                     style={{ flex: 1, minWidth: 120 }}
                   >
                     <Download size={16} />
