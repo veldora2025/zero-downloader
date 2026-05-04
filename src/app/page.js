@@ -243,7 +243,7 @@ export default function Home() {
             <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 300 }}>in seconds.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 17, maxWidth: 500, margin: '0 auto', fontWeight: 300 }}>
-            TikTok, YouTube Shorts, Instagram Reels — tanpa watermark, kualitas premium.
+            TikTok, YouTube, Instagram Reels — tanpa watermark, kualitas premium.
           </p>
         </div>
 
@@ -320,6 +320,54 @@ export default function Home() {
                   {m.label}
                 </button>
               ))}
+            </div>
+
+            {/* Quality Selector (hanya aktif jika mode video) */}
+            <div style={{ position: 'relative' }} ref={qualityRef}>
+              <button
+                type="button"
+                onClick={() => downloadMode === 'video' && setShowQuality(!showQuality)}
+                disabled={downloadMode === 'audio'}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '10px 16px', borderRadius: 10,
+                  background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)',
+                  color: downloadMode === 'audio' ? 'rgba(255,255,255,0.2)' : '#fff',
+                  cursor: downloadMode === 'audio' ? 'not-allowed' : 'pointer',
+                  fontSize: 13, fontWeight: 500,
+                }}
+              >
+                Kualitas: {qualityOptions.find(q => q.value === quality)?.label || '720p'}
+                <ChevronDown size={14} style={{ opacity: 0.5 }} />
+              </button>
+
+              {showQuality && downloadMode === 'video' && (
+                <div className="glass-solid animate-scale-in" style={{
+                  position: 'absolute', top: '100%', left: 0, marginTop: 8,
+                  width: 180, padding: 6, borderRadius: 12, zIndex: 50,
+                  display: 'flex', flexDirection: 'column', gap: 2,
+                }}>
+                  {qualityOptions.map(q => (
+                    <button
+                      key={q.value} type="button"
+                      onClick={() => { setQuality(q.value); setShowQuality(false); }}
+                      style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        padding: '10px 12px', borderRadius: 8, border: 'none',
+                        background: quality === q.value ? 'rgba(123,47,247,0.15)' : 'transparent',
+                        color: quality === q.value ? '#fff' : 'rgba(255,255,255,0.7)',
+                        cursor: 'pointer', textAlign: 'left',
+                      }}
+                    >
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{q.label}</div>
+                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>{q.desc}</div>
+                      </div>
+                      {quality === q.value && <Check size={14} style={{ color: 'var(--accent-purple)' }} />}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Spacer */}
@@ -506,7 +554,7 @@ export default function Home() {
             }}>
               {[
                 { name: 'TikTok', cls: 'chip-tiktok' },
-                { name: 'YouTube Shorts', cls: 'chip-youtube' },
+                { name: 'YouTube', cls: 'chip-youtube' },
                 { name: 'Instagram Reels', cls: 'chip-instagram' },
               ].map(p => (
                 <span key={p.name} className={`chip ${p.cls}`}>

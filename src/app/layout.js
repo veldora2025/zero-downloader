@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Zero Downloader - Premium Video Downloader",
-  description: "Download TikTok, YouTube Shorts, and Instagram Reels with ease.",
+  description: "Download TikTok, YouTube, and Instagram Reels with ease.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
