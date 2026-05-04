@@ -547,21 +547,7 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Supported platforms */}
-            <div style={{
-              display: 'flex', justifyContent: 'center', gap: 10,
-              marginTop: 32, flexWrap: 'wrap',
-            }}>
-              {[
-                { name: 'TikTok', cls: 'chip-tiktok' },
-                { name: 'YouTube', cls: 'chip-youtube' },
-                { name: 'Instagram Reels', cls: 'chip-instagram' },
-              ].map(p => (
-                <span key={p.name} className={`chip ${p.cls}`}>
-                  {p.name}
-                </span>
-              ))}
-            </div>
+
           </div>
         )}
       </main>
