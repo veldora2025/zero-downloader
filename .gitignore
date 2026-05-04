@@ -43,3 +43,5 @@ next-env.d.ts
 # Zero Downloader Specific
 cookies.txt
 public/downloads/
+AGENTS.md
+CLAUDE.md
